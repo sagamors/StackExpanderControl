@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:StackExpanderControl">
+    <Style TargetType="{x:Type local:StackExpander}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:StackExpander}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:StackExpanderItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:StackExpanderItem}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <RadioButton x:Name="RadioButton"
+                                     Content="aaa"
+                                     GroupName="PART_ITEM">
+                            <RadioButton.Template>
+                                <ControlTemplate>
+                                    <local:ExpanderEx Content="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                        Path=DataContext}"
+                                                      DisplayHeaderPath="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
+                                                                                  Path=DisplayHeaderPath}"
+                                                      DisplayMemberPath="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
+                                                                                  Path=DisplayMemberPath}"
+                                                      Header="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                       Path=DataContext}"
+                                                      HeaderTemplate="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
+                                                                               Path=HeaderTemplate}"
+                                                      IsExpanded="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                                           Path=IsChecked}" />
+                                </ControlTemplate>
+                            </RadioButton.Template>
+                        </RadioButton>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
