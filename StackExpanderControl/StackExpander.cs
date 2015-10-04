@@ -32,6 +32,7 @@ namespace StackExpanderControl
     ///     <MyNamespace:CustomControl1/>
     ///
     /// </summary>
+    [StyleTypedProperty(Property = "ItemContainerStyle", StyleTargetType = typeof(StackExpanderItem))]
     public class StackExpander : ItemsControl
     {
         static StackExpander()
@@ -45,19 +46,26 @@ namespace StackExpanderControl
             return item is StackExpanderItem;
         }
 
-        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-        {
-            base.PrepareContainerForItemOverride(element, item);
 
+       protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+        {
+            if(item is StackExpanderItem) return;
+            base.PrepareContainerForItemOverride(element, item);
             var contentPresenter = ((StackExpanderItem)element);
+
             contentPresenter.ContentTemplate = ItemTemplate;
             var framework = item as FrameworkElement;
-            if (framework != null && framework.Parent!=null)
+           if (framework != null && framework.Parent!=null)
             {
-        /*        RemoveChildHelper.RemoveChild(framework.Parent, framework);*/
-                contentPresenter.Content = "rety";
+                RemoveChildHelper.RemoveChild(framework.Parent, framework);
+                framework.DataContext = item;
+/*                int oldIndex = Items.IndexOf(item);
+               // RemoveChildHelper.RemoveChild(framework.Parent, framework);
+                contentPresenter.Content = framework;
+                    Items[oldIndex]=contentPresenter;*/
             }
         }
+
 
         protected override DependencyObject GetContainerForItemOverride()
         {

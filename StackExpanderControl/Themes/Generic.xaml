@@ -13,6 +13,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <local:StackExpanderItem></local:StackExpanderItem>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type local:StackExpanderItem}">
@@ -27,9 +34,7 @@
                                      GroupName="PART_ITEM">
                             <RadioButton.Template>
                                 <ControlTemplate>
-                                    <local:ExpanderEx Content="{Binding RelativeSource={RelativeSource TemplatedParent},
-                                                                        Path=DataContext}"
-                                                      DisplayHeaderPath="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
+                                    <local:ExpanderEx DisplayHeaderPath="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
                                                                                   Path=DisplayHeaderPath}"
                                                       DisplayMemberPath="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
                                                                                   Path=DisplayMemberPath}"
@@ -38,7 +43,10 @@
                                                       HeaderTemplate="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
                                                                                Path=HeaderTemplate}"
                                                       IsExpanded="{Binding RelativeSource={RelativeSource TemplatedParent},
-                                                                           Path=IsChecked}" />
+                                                                           Path=IsChecked}" >
+                                        <ContentPresenter Content="{Binding RelativeSource={RelativeSource AncestorType=local:StackExpanderItem},
+                                                                               Path=Content}"></ContentPresenter>
+                                    </local:ExpanderEx>
                                 </ControlTemplate>
                             </RadioButton.Template>
                         </RadioButton>
