@@ -1,37 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace StackExpanderControl
 {
-    /// <summary>
-    /// Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
-    ///
-    /// Step 1a) Using this custom control in a XAML file that exists in the current project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:StackExpanderControl"
-    ///
-    ///
-    /// Step 1b) Using this custom control in a XAML file that exists in a different project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:StackExpanderControl;assembly=StackExpanderControl"
-    ///
-    /// You will also need to add a project reference from the project where the XAML file lives
-    /// to this project and Rebuild to avoid compilation errors:
-    ///
-    ///     Right click on the target project in the Solution Explorer and
-    ///     "Add Reference"->"Projects"->[Select this project]
-    ///
-    ///
-    /// Step 2)
-    /// Go ahead and use your control in the XAML file.
-    ///
-    ///     <MyNamespace:CustomControl1/>
-    ///
-    /// </summary>
     [StyleTypedProperty(Property = "ItemContainerStyle", StyleTargetType = typeof(StackExpanderItem))]
     public class StackExpander : ItemsControl
     {
@@ -41,31 +15,52 @@ namespace StackExpanderControl
                 new FrameworkPropertyMetadata(typeof (StackExpander)));
         }
 
+        public StackExpander()
+        {
+            ExpandedExpanderItems= new List<StackExpanderItem>();
+        }
+
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
             return item is StackExpanderItem;
         }
 
-
-       protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-        {
-            if(item is StackExpanderItem) return;
-            base.PrepareContainerForItemOverride(element, item);
-            var contentPresenter = ((StackExpanderItem)element);
-
-            contentPresenter.ContentTemplate = ItemTemplate;
-            var framework = item as FrameworkElement;
-           if (framework != null && framework.Parent!=null)
+        public static readonly DependencyProperty MultiExpandedProperty = DependencyProperty.Register(
+            "MultiExpanded", typeof (bool), typeof (StackExpander), new PropertyMetadata(default(bool), (o, args) =>
             {
-                RemoveChildHelper.RemoveChild(framework.Parent, framework);
-                framework.DataContext = item;
-/*                int oldIndex = Items.IndexOf(item);
-               // RemoveChildHelper.RemoveChild(framework.Parent, framework);
-                contentPresenter.Content = framework;
-                    Items[oldIndex]=contentPresenter;*/
-            }
+                var control = (StackExpander) o;
+                control.CollapseAll();
+            }));
+
+        public bool MultiExpanded
+        {
+            get { return (bool) GetValue(MultiExpandedProperty); }
+            set { SetValue(MultiExpandedProperty, value); }
         }
 
+        internal List<StackExpanderItem> ExpandedExpanderItems { get; set; }
+
+        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
+        {
+            if (item is StackExpanderItem) return;
+            base.PrepareContainerForItemOverride(element, item);
+            var contentPresenter = ((ContentControl) element);
+            if (item is FrameworkElement)
+            {
+                RemoveLogicalChild(item);
+                RemoveVisualChild((Visual) item);
+            }
+            contentPresenter.ContentTemplate = ItemTemplate;
+        }
+
+        public void CollapseAll()
+        {
+            var list = new List<StackExpanderItem>(ExpandedExpanderItems);
+            foreach (var expanderItem in list)
+            {
+                expanderItem.IsExpanded = false;
+            }
+        }
 
         protected override DependencyObject GetContainerForItemOverride()
         {

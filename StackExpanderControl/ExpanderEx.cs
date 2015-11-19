@@ -5,14 +5,13 @@ using System.Windows.Data;
 
 namespace StackExpanderControl
 {
-    class ExpanderEx : Expander
+    public class ExpanderEx : Expander
     {
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             ChangePath("Header", DisplayHeaderPath);
-
         }
 
         public static readonly DependencyProperty DisplayHeaderPathProperty = DependencyProperty.Register(

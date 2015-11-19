@@ -2,22 +2,29 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Test"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:se="clr-namespace:StackExpanderControl;assembly=StackExpanderControl"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow"
         Width="525"
         Height="350"
-        mc:Ignorable="d">
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <StackPanel>
-        <se:StackExpanderItem >sda</se:StackExpanderItem>
-        <se:StackExpander>
-            <system:String>1</system:String>
-            <system:String>2</system:String>
-           
-            <Button>aaa</Button>
+        <se:StackExpander ItemsSource="{Binding Items}">
+            <se:StackExpander.ItemContainerStyle>
+                <Style TargetType="se:StackExpanderItem">
+                    <Setter Property="Header" Value="{Binding Header}"/>
+                    <Setter Property="Content" Value="{Binding Content}"/>
+                </Style>
+            </se:StackExpander.ItemContainerStyle>
         </se:StackExpander>
-
+        <TextBlock Text="Set in xaml"/>
+        <se:StackExpander>
+            <se:StackExpanderItem Header="HeaderItem">ContentItem</se:StackExpanderItem>
+            <system:String>String1</system:String>
+            <system:String>String2</system:String>
+            <Button>Text button</Button>
+        </se:StackExpander>
     </StackPanel>
 </Window>
