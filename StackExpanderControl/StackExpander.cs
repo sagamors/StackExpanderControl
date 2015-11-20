@@ -44,13 +44,30 @@ namespace StackExpanderControl
         {
             if (item is StackExpanderItem) return;
             base.PrepareContainerForItemOverride(element, item);
-            var contentPresenter = ((ContentControl) element);
             if (item is FrameworkElement)
             {
                 RemoveLogicalChild(item);
                 RemoveVisualChild((Visual) item);
             }
-            contentPresenter.ContentTemplate = ItemTemplate;
+        }
+
+        private StackExpanderItem _lastExpandedExpanderItem;
+        internal StackExpanderItem LastExpandedExpanderItem
+        {
+            get { return _lastExpandedExpanderItem; }
+            set
+            {
+                _lastExpandedExpanderItem = value;
+                SelectedItem = ItemContainerGenerator.ItemFromContainer(value);
+            }
+        }
+
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
+            "SelectedItem", typeof(object), typeof(StackExpander), new PropertyMetadata(default(object)));
+        public object SelectedItem
+        {
+            get { return (object) GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
         }
 
         public void CollapseAll()

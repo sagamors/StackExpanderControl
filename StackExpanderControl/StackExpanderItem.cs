@@ -17,7 +17,6 @@ namespace StackExpanderControl
         {
             get
             {
-                var parent = VisualTreeHelper.GetParent(this);
                 return ItemsControl.ItemsControlFromItemContainer(this) as StackExpander;
             }
         }
@@ -31,8 +30,8 @@ namespace StackExpanderControl
         private void StackExpanderItem_Collapsed(object sender, RoutedEventArgs routedEventArgs)
         {
             var parent = ParentStackExpander;
-            if (parent == null && parent.ExpandedExpanderItems == null) return;
-            parent.ExpandedExpanderItems.Remove(this);
+            if (parent != null && parent.ExpandedExpanderItems != null) 
+             parent.ExpandedExpanderItems.Remove(this);
         }
 
         private void StackExpanderItem_Expanded(object sender, RoutedEventArgs e)
@@ -55,6 +54,8 @@ namespace StackExpanderControl
                 }
                 parent.ExpandedExpanderItems.Add(this);
             }
+
+            parent.LastExpandedExpanderItem = this;
         }
     }
 }

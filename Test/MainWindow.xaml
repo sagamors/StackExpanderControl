@@ -8,23 +8,69 @@
         Title="MainWindow"
         Width="525"
         Height="350"
-        mc:Ignorable="d"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        mc:Ignorable="d">
     <StackPanel>
-        <se:StackExpander ItemsSource="{Binding Items}">
-            <se:StackExpander.ItemContainerStyle>
-                <Style TargetType="se:StackExpanderItem">
-                    <Setter Property="Header" Value="{Binding Header}"/>
-                    <Setter Property="Content" Value="{Binding Content}"/>
-                </Style>
-            </se:StackExpander.ItemContainerStyle>
-        </se:StackExpander>
-        <TextBlock Text="Set in xaml"/>
-        <se:StackExpander>
-            <se:StackExpanderItem Header="HeaderItem">ContentItem</se:StackExpanderItem>
-            <system:String>String1</system:String>
-            <system:String>String2</system:String>
-            <Button>Text button</Button>
-        </se:StackExpander>
+        <GroupBox Header="Single use StackExpanderItem">
+            <se:StackExpanderItem Content="Content" Header="Header string" />
+        </GroupBox>
+        <GroupBox Header="use StackExpander.ItemContainerStyle">
+            <se:StackExpander x:Name="Stack" ItemsSource="{Binding Items}">
+                <se:StackExpander.ItemContainerStyle>
+                    <Style TargetType="se:StackExpanderItem">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Button Background="Red" Content="{Binding HeaderName}" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Button Content="{Binding ContentName}" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </se:StackExpander.ItemContainerStyle>
+            </se:StackExpander>
+        </GroupBox>
+
+        <GroupBox Header="use StackExpander.ItemTemplate">
+            <se:StackExpander ItemsSource="{Binding Items}">
+                <se:StackExpander.ItemTemplate>
+                    <DataTemplate>
+                        <Button />
+                    </DataTemplate>
+                </se:StackExpander.ItemTemplate>
+            </se:StackExpander>
+        </GroupBox>
+
+        <GroupBox Header="use StackExpander.ItemTemplate">
+            <se:StackExpander ItemsSource="{Binding Items}">
+                <!--  Todo  -->
+                <se:StackExpander.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="Red" Text="{Binding HeaderName}" />
+                    </DataTemplate>
+                </se:StackExpander.ItemTemplate>
+                <!--  Todo  -->
+                <!--<se:StackExpander.ContentTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ContentName}" Foreground="Blue"/>
+                </DataTemplate>
+                </se:StackExpander.ContentTemplate>-->
+            </se:StackExpander>
+        </GroupBox>
+
+        <GroupBox Header="StackExpander use in XAML">
+            <se:StackExpander>
+                <se:StackExpanderItem Header="HeaderNameItem">ContentNameItem</se:StackExpanderItem>
+                <system:String>String1</system:String>
+                <system:String>String2</system:String>
+                <Button>Text button</Button>
+            </se:StackExpander>
+        </GroupBox>
     </StackPanel>
 </Window>

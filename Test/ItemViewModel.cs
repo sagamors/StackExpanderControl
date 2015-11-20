@@ -10,13 +10,13 @@ namespace Test
     [ImplementPropertyChanged]
     public class ItemViewModel
     {
-        public string Header { get; set; }
-        public string Content { get; set; }
+        public string HeaderName { get; set; }
+        public string ContentName { get; set; }
 
         public ItemViewModel()
         {
-            Header = "Header";
-            Content = "Content";
+            HeaderName = "HeaderName";
+            ContentName = "ContentName";
         }
     }
 }
